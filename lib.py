@@ -3,7 +3,7 @@ import pygame
 from random import randint
 
 # constants
-SCREEN_WIDTH = 1000
+SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 800
 SCREEN_TITLE = "Template"
 

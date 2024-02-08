@@ -4,6 +4,8 @@ import pygame
 # project file imports
 import lib
 import debug
+import world
+import player
 
 pygame.init() # initialize the pygame module
 
@@ -17,6 +19,13 @@ class Game:
         lib.events = pygame.event.get() # initializing the lib.events list (NONE at start)
 
         self.debug_interface = debug.DebugInterface()
+
+        self.ground = world.Ground()
+        self.player = player.Player()
+
+        self.world_container = pygame.sprite.Group()
+        self.world_container.add(self.ground)
+        self.world_container.add(self.player)
 
     def run(self):
         while self.running:
@@ -42,16 +51,23 @@ class Game:
                 if event.key == pygame.K_TAB:
                     self.debug_interface.toggle_active()
 
+                if event.key == pygame.K_SPACE:
+                    self.player.jump()
+
     def multi_events(self):
         pass
 
     def draw(self):
         self.screen.fill(lib.color.BLACK)
 
+        self.world_container.draw(self.screen)
+
         if self.debug_interface.active:
             self.debug_interface.draw()
 
     def update(self):
+        self.world_container.update()
+
         self.debug_interface.update(self.clock)
         pygame.display.update()
         lib.delta_time = self.clock.tick(lib.framerate) / 1000
